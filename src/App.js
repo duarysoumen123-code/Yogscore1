@@ -1,20 +1,14 @@
 import React, { useState } from "react";
 
 export default function App() {
-  // ✅ Logged in user
   const [loggedInUser, setLoggedInUser] = useState(null);
-
-  // ✅ Users list (we can add new users here)
   const [users, setUsers] = useState([
     { username: "admin", password: "admin", role: "Admin" },
     { username: "judge", password: "judge", role: "Judge" },
     { username: "athlete", password: "athlete", role: "Athlete" }
   ]);
-
-  // ✅ Show sign‑up form toggle
   const [showSignUp, setShowSignUp] = useState(false);
 
-  // ✅ Login function
   const login = (username, password, role) => {
     const user = users.find(
       (u) => u.username === username && u.password === password && u.role === role
@@ -26,21 +20,17 @@ export default function App() {
     }
   };
 
-  // ✅ Sign‑up function
   const signUp = (username, password, role) => {
-    // prevent duplicate usernames
     if (users.find((u) => u.username === username)) {
       alert("⚠️ Username already exists");
       return;
     }
-    // add new user
     const newUser = { username, password, role };
     setUsers([...users, newUser]);
-    alert(✅ Account created for ${role}: ${username});
-    setShowSignUp(false); // close sign‑up form
+    alert(`✅ Account created for ${role}: ${username}`);
+    setShowSignUp(false);
   };
 
-  // ✅ Logout function
   const logout = () => setLoggedInUser(null);
 
   return (
@@ -111,7 +101,6 @@ export default function App() {
           <h2>✅ Welcome, {loggedInUser.role} {loggedInUser.username}!</h2>
           <button onClick={logout} style={{ marginBottom: "20px" }}>Logout</button>
 
-          {/* 👑 ADMIN DASHBOARD */}
           {loggedInUser.role === "Admin" && (
             <div>
               <h3>👑 Admin Dashboard</h3>
@@ -124,7 +113,6 @@ export default function App() {
             </div>
           )}
 
-          {/* ⚖️ JUDGE DASHBOARD */}
           {loggedInUser.role === "Judge" && (
             <div>
               <h3>⚖️ Judge Dashboard</h3>
@@ -132,7 +120,6 @@ export default function App() {
             </div>
           )}
 
-          {/* 🧘 ATHLETE DASHBOARD */}
           {loggedInUser.role === "Athlete" && (
             <div>
               <h3>🧘 Athlete Dashboard</h3>
