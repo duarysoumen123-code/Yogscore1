@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <div style={{
-      background: "linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%)",
+      background: "linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #89f7fe 100%)",
       minHeight: "100vh",
       display: "flex",
       justifyContent: "center",
