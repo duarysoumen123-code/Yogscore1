@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -9,16 +9,22 @@ export default function App() {
   ]);
   const [showSignUp, setShowSignUp] = useState(false);
 
-  // ✅ State for events (Admin)
-  const [events, setEvents] = useState([]);
+  // ✅ Load from localStorage (or empty array if nothing saved)
+  const [events, setEvents] = useState(() => JSON.parse(localStorage.getItem("events")) || []);
+  const [athletes, setAthletes] = useState(() => JSON.parse(localStorage.getItem("athletes")) || []);
+  const [judges, setJudges] = useState(() => JSON.parse(localStorage.getItem("judges")) || []);
+  const [scores, setScores] = useState(() => JSON.parse(localStorage.getItem("scores")) || {});
 
-  // ✅ State for athletes (Admin)
-  const [athletes, setAthletes] = useState([]);
+  // ✅ Save any changes to localStorage automatically
+  useEffect(() => {
+    localStorage.setItem("events", JSON.stringify(events));
+    localStorage.setItem("athletes", JSON.stringify(athletes));
+    localStorage.setItem("judges", JSON.stringify(judges));
+    localStorage.setItem("scores", JSON.stringify(scores));
+  }, [events, athletes, judges, scores]);
 
   const login = (username, password, role) => {
-    const user = users.find(
-      (u) => u.username === username && u.password === password && u.role === role
-    );
+    const user = users.find((u) => u.username === username && u.password === password && u.role === role);
     if (user) {
       setLoggedInUser(user);
     } else {
@@ -38,7 +44,7 @@ export default function App() {
 
   const logout = () => setLoggedInUser(null);
 
-  // ✅ Add Event Function
+  // ✅ Event Functions
   const addEvent = () => {
     const eventName = document.getElementById("eventName").value;
     if (eventName.trim() === "") {
@@ -49,7 +55,13 @@ export default function App() {
     document.getElementById("eventName").value = "";
   };
 
-  // ✅ Add Athlete Function
+  const removeEvent = (index) => {
+    const updated = [...events];
+    updated.splice(index, 1);
+    setEvents(updated);
+  };
+
+  // ✅ Athlete Functions
   const addAthlete = () => {
     const athleteName = document.getElementById("athleteName").value;
     if (athleteName.trim() === "") {
@@ -58,6 +70,44 @@ export default function App() {
     }
     setAthletes([...athletes, athleteName]);
     document.getElementById("athleteName").value = "";
+  };
+
+  const removeAthlete = (index) => {
+    const updated = [...athletes];
+    updated.splice(index, 1);
+    setAthletes(updated);
+  };
+
+  // ✅ Judge Functions
+  const addJudge = () => {
+    const judgeName = document.getElementById("judgeName").value;
+    const judgeRole = document.getElementById("judgeRole").value;
+    if (judgeName.trim() === "") {
+      alert("⚠️ Please enter a judge name");
+      return;
+    }
+    setJudges([...judges, { name: judgeName, role: judgeRole }]);
+    document.getElementById("judgeName").value = "";
+    document.getElementById("judgeRole").value = "D Judge";
+  };
+
+  const removeJudge = (index) => {
+    const updated = [...judges];
+    updated.splice(index, 1);
+    setJudges(updated);
+  };
+
+  // ✅ Judge Function: Save Score
+  const saveScore = (athlete, D, A, T, Penalty) => {
+    if (D === "" || A === "" || T === "" || Penalty === "") {
+      alert("⚠️ Please enter all scores");
+      return;
+    }
+    setScores({
+      ...scores,
+      [athlete]: { D, A, T, Penalty }
+    });
+    alert(`✅ Scores saved for ${athlete}`);
   };
 
   return (
@@ -72,206 +122,72 @@ export default function App() {
 
       {/* 🔐 LOGIN FORM */}
       {!loggedInUser && !showSignUp && (
-        <div style={{
-          background: "rgba(255, 255, 255, 0.88)",
-          padding: "40px",
-          borderRadius: "12px",
-          boxShadow: "0px 6px 20px rgba(0,0,0,0.2)",
-          width: "350px",
-          textAlign: "center"
-        }}>
+        <div style={{ background: "rgba(255, 255, 255, 0.88)", padding: "40px", borderRadius: "12px", boxShadow: "0px 6px 20px rgba(0,0,0,0.2)", width: "350px", textAlign: "center" }}>
           <h1 style={{ marginBottom: "20px", color: "#1c1c1c" }}>🏆 Yogscore</h1>
           <h3 style={{ marginBottom: "20px", color: "#555" }}>Login</h3>
 
-          <input id="username" placeholder="Username"
-            style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
-          /><br />
-
-          <input id="password" type="password" placeholder="Password"
-            style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
-          /><br />
-
-          <select id="role"
-            style={{ width: "95%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
-          >
+          <input id="username" placeholder="Username" style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }} /><br />
+          <input id="password" type="password" placeholder="Password" style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }} /><br />
+          <select id="role" style={{ width: "95%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}>
             <option>Admin</option>
             <option>Judge</option>
             <option>Athlete</option>
           </select><br />
-
-          <button
-            style={{
-              width: "100%", padding: "12px",
-              background: "#1877F2", color: "white",
-              fontWeight: "600", fontSize: "16px",
-              border: "none", borderRadius: "8px",
-              marginTop: "10px", cursor: "pointer"
-            }}
+          <button style={{ width: "100%", padding: "12px", background: "#1877F2", color: "white", fontWeight: "600", fontSize: "16px", border: "none", borderRadius: "8px", marginTop: "10px", cursor: "pointer" }}
             onClick={() => {
               const username = document.getElementById("username").value;
               const password = document.getElementById("password").value;
               const role = document.getElementById("role").value;
               login(username, password, role);
-            }}
-          >
-            Login
-          </button>
-
-          <p style={{ marginTop: "12px", color: "#333" }}>
-            Don’t have an account?{" "}
-            <button
-              style={{ background: "none", border: "none", color: "#1877F2", fontWeight: "600", cursor: "pointer" }}
-              onClick={() => setShowSignUp(true)}
-            >
-              Sign Up
-            </button>
-          </p>
-        </div>
-      )}
-
-      {/* 📝 SIGN-UP FORM */}
-      {!loggedInUser && showSignUp && (
-        <div style={{
-          background: "rgba(255, 255, 255, 0.88)",
-          padding: "40px",
-          borderRadius: "12px",
-          boxShadow: "0px 6px 20px rgba(0,0,0,0.2)",
-          width: "350px",
-          textAlign: "center"
-        }}>
-          <h1 style={{ marginBottom: "20px", color: "#1c1c1c" }}>🏆 Yogscore</h1>
-          <h3 style={{ marginBottom: "20px", color: "#555" }}>Sign Up</h3>
-
-          <input id="newUsername" placeholder="Choose Username"
-            style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
-          /><br />
-
-          <input id="newPassword" type="password" placeholder="Choose Password"
-            style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
-          /><br />
-
-          <select id="newRole"
-            style={{ width: "95%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
-          >
-            <option>Judge</option>
-            <option>Athlete</option>
-          </select><br />
-
-          <button
-            style={{
-              width: "100%", padding: "12px",
-              background: "#42b72a", color: "white",
-              fontWeight: "600", fontSize: "16px",
-              border: "none", borderRadius: "8px",
-              marginTop: "10px", cursor: "pointer"
-            }}
-            onClick={() => {
-              const username = document.getElementById("newUsername").value;
-              const password = document.getElementById("newPassword").value;
-              const role = document.getElementById("newRole").value;
-              signUp(username, password, role);
-            }}
-          >
-            Create Account
-          </button>
-
-          <p style={{ marginTop: "12px", color: "#333" }}>
-            Already have an account?{" "}
-            <button
-              style={{ background: "none", border: "none", color: "#1877F2", fontWeight: "600", cursor: "pointer" }}
-              onClick={() => setShowSignUp(false)}
-            >
-              Back to Login
-            </button>
-          </p>
+            }}>Login</button>
         </div>
       )}
 
       {/* ✅ DASHBOARD */}
       {loggedInUser && (
-        <div style={{
-          background: "rgba(255, 255, 255, 0.88)",
-          padding: "40px",
-          borderRadius: "12px",
-          boxShadow: "0px 6px 20px rgba(0,0,0,0.2)",
-          width: "400px",
-          textAlign: "center"
-        }}>
+        <div style={{ background: "rgba(255, 255, 255, 0.88)", padding: "40px", borderRadius: "12px", boxShadow: "0px 6px 20px rgba(0,0,0,0.2)", width: "450px", textAlign: "center" }}>
           <h2>✅ Welcome, {loggedInUser.role} {loggedInUser.username}!</h2>
-          <button onClick={logout} style={{
-            marginTop: "20px",
-            background: "#f44336",
-            color: "white",
-            padding: "10px 20px",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer"
-          }}>Logout</button>
 
           {/* 👑 ADMIN DASHBOARD */}
           {loggedInUser.role === "Admin" && (
             <div>
               <h3>👑 Admin Dashboard</h3>
 
-              {/* ✅ EVENT CREATION */}
-              <h4>📋 Create Event</h4>
-              <input id="eventName" placeholder="Enter Event Name"
-                style={{ width: "90%", padding: "10px", margin: "10px 0", borderRadius: "8px", border: "1px solid #ccc" }}
-              />
-              <button
-                onClick={addEvent}
-                style={{
-                  width: "100%", padding: "10px",
-                  background: "#4CAF50", color: "white",
-                  border: "none", borderRadius: "8px", cursor: "pointer"
-                }}
-              >
-                ➕ Add Event
-              </button>
-
+              {/* Events */}
+              <h4>📋 Events</h4>
+              <input id="eventName" placeholder="Enter Event Name" style={{ width: "90%", padding: "10px", margin: "10px 0", borderRadius: "8px", border: "1px solid #ccc" }} />
+              <button onClick={addEvent} style={{ width: "100%", padding: "10px", background: "#4CAF50", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>➕ Add Event</button>
               <ul style={{ textAlign: "left", marginTop: "15px" }}>
                 {events.map((event, index) => (
-                  <li key={index}>📅 {event}</li>
+                  <li key={index}>📅 {event} <button onClick={() => removeEvent(index)} style={{ marginLeft: "10px", color: "red", border: "none", background: "transparent", cursor: "pointer" }}>❌</button></li>
                 ))}
               </ul>
 
-              {/* ✅ ATHLETE MANAGEMENT */}
-              <h4 style={{ marginTop: "20px" }}>🧘 Add Athletes</h4>
-              <input id="athleteName" placeholder="Enter Athlete Name"
-                style={{ width: "90%", padding: "10px", margin: "10px 0", borderRadius: "8px", border: "1px solid #ccc" }}
-              />
-              <button
-                onClick={addAthlete}
-                style={{
-                  width: "100%", padding: "10px",
-                  background: "#FF9800", color: "white",
-                  border: "none", borderRadius: "8px", cursor: "pointer"
-                }}
-              >
-                ➕ Add Athlete
-              </button>
-
+              {/* Athletes */}
+              <h4 style={{ marginTop: "20px" }}>🧘 Athletes</h4>
+              <input id="athleteName" placeholder="Enter Athlete Name" style={{ width: "90%", padding: "10px", margin: "10px 0", borderRadius: "8px", border: "1px solid #ccc" }} />
+              <button onClick={addAthlete} style={{ width: "100%", padding: "10px", background: "#FF9800", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>➕ Add Athlete</button>
               <ul style={{ textAlign: "left", marginTop: "15px" }}>
                 {athletes.map((athlete, index) => (
-                  <li key={index}>🧍 {athlete}</li>
+                  <li key={index}>🧍 {athlete} <button onClick={() => removeAthlete(index)} style={{ marginLeft: "10px", color: "red", border: "none", background: "transparent", cursor: "pointer" }}>❌</button></li>
                 ))}
               </ul>
-            </div>
-          )}
 
-          {/* ⚖️ JUDGE DASHBOARD */}
-          {loggedInUser.role === "Judge" && (
-            <div>
-              <h3>⚖️ Judge Dashboard</h3>
-              <p>Here you will enter scores for athletes.</p>
-            </div>
-          )}
-
-          {/* 🧘 ATHLETE DASHBOARD */}
-          {loggedInUser.role === "Athlete" && (
-            <div>
-              <h3>🧘 Athlete Dashboard</h3>
-              <p>Here you will submit your Asana sequence.</p>
+              {/* Judges */}
+              <h4 style={{ marginTop: "20px" }}>⚖️ Judges</h4>
+              <input id="judgeName" placeholder="Enter Judge Name" style={{ width: "90%", padding: "10px", margin: "10px 0", borderRadius: "8px", border: "1px solid #ccc" }} />
+              <select id="judgeRole" style={{ width: "95%", padding: "10px", margin: "10px 0", borderRadius: "8px", border: "1px solid #ccc" }}>
+                <option>D Judge</option>
+                <option>A Judge</option>
+                <option>T Judge</option>
+                <option>Evaluator</option>
+              </select>
+              <button onClick={addJudge} style={{ width: "100%", padding: "10px", background: "#673AB7", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" }}>➕ Add Judge</button>
+              <ul style={{ textAlign: "left", marginTop: "15px" }}>
+                {judges.map((judge, index) => (
+                  <li key={index}>⚖️ {judge.name} — <strong>{judge.role}</strong> <button onClick={() => removeJudge(index)} style={{ marginLeft: "10px", color: "red", border: "none", background: "transparent", cursor: "pointer" }}>❌</button></li>
+                ))}
+              </ul>
             </div>
           )}
         </div>
@@ -279,3 +195,4 @@ export default function App() {
     </div>
   );
 }
+
