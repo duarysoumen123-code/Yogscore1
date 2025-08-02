@@ -120,7 +120,7 @@ export default function App() {
           background: "white",
           padding: "40px",
           borderRadius: "12px",
-          boxShadow: "0px 6px 20px rgba(0,0,0,0.15)",
+          boxShadow: "0px 0px 40px rgba(138, 180, 255, 0.4)"
           width: "350px",
           textAlign: "center"
         }}>
