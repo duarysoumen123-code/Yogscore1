@@ -34,19 +34,21 @@ export default function App() {
 
   return (
     <div style={{
-      background: "url('https://images.unsplash.com/photo-1599447421322-5e2b13cbb74a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover",
+      background: "url('https://images.unsplash.com/photo-1552196563-55cd4e45efb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover",
       minHeight: "100vh",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       fontFamily: "'Poppins', Arial, sans-serif"
     }}>
+
+      {/* 🔐 LOGIN FORM */}
       {!loggedInUser && !showSignUp && (
         <div style={{
-          background: "white",
+          background: "rgba(255, 255, 255, 0.88)", // ✅ soft white overlay
           padding: "40px",
           borderRadius: "12px",
-          boxShadow: "0px 6px 20px rgba(0,0,0,0.15)",
+          boxShadow: "0px 6px 20px rgba(0,0,0,0.2)",
           width: "350px",
           textAlign: "center"
         }}>
@@ -114,13 +116,13 @@ export default function App() {
         </div>
       )}
 
-      {/* SIGN UP FORM */}
+      {/* 📝 SIGN-UP FORM */}
       {!loggedInUser && showSignUp && (
         <div style={{
-          background: "rgba(255, 255, 255, 0.9)",
+          background: "rgba(255, 255, 255, 0.88)", // ✅ soft white overlay
           padding: "40px",
           borderRadius: "12px",
-          boxShadow: "0px 0px 40px rgba(138, 180, 255, 0.4)"
+          boxShadow: "0px 6px 20px rgba(0,0,0,0.2)",
           width: "350px",
           textAlign: "center"
         }}>
@@ -187,13 +189,13 @@ export default function App() {
         </div>
       )}
 
-      {/* DASHBOARD */}
+      {/* ✅ DASHBOARD */}
       {loggedInUser && (
         <div style={{
-          background: "white",
+          background: "rgba(255, 255, 255, 0.88)", // ✅ soft white overlay
           padding: "40px",
           borderRadius: "12px",
-          boxShadow: "0px 6px 20px rgba(0,0,0,0.15)",
+          boxShadow: "0px 6px 20px rgba(0,0,0,0.2)",
           width: "400px",
           textAlign: "center"
         }}>
