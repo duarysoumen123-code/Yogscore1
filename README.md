@@ -1,0 +1,1 @@
+# Yogscore Judging App\nThis is the React project for Yogscore.
