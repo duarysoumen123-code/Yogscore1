@@ -9,8 +9,11 @@ export default function App() {
   ]);
   const [showSignUp, setShowSignUp] = useState(false);
 
-  // ✅ New state for events (Admin feature)
+  // ✅ State for events (Admin)
   const [events, setEvents] = useState([]);
+
+  // ✅ State for athletes (Admin)
+  const [athletes, setAthletes] = useState([]);
 
   const login = (username, password, role) => {
     const user = users.find(
@@ -44,6 +47,17 @@ export default function App() {
     }
     setEvents([...events, eventName]);
     document.getElementById("eventName").value = "";
+  };
+
+  // ✅ Add Athlete Function
+  const addAthlete = () => {
+    const athleteName = document.getElementById("athleteName").value;
+    if (athleteName.trim() === "") {
+      alert("⚠️ Please enter an athlete name");
+      return;
+    }
+    setAthletes([...athletes, athleteName]);
+    document.getElementById("athleteName").value = "";
   };
 
   return (
@@ -200,6 +214,7 @@ export default function App() {
               <h3>👑 Admin Dashboard</h3>
 
               {/* ✅ EVENT CREATION */}
+              <h4>📋 Create Event</h4>
               <input id="eventName" placeholder="Enter Event Name"
                 style={{ width: "90%", padding: "10px", margin: "10px 0", borderRadius: "8px", border: "1px solid #ccc" }}
               />
@@ -214,10 +229,31 @@ export default function App() {
                 ➕ Add Event
               </button>
 
-              {/* ✅ SHOW EVENTS LIST */}
               <ul style={{ textAlign: "left", marginTop: "15px" }}>
                 {events.map((event, index) => (
                   <li key={index}>📅 {event}</li>
+                ))}
+              </ul>
+
+              {/* ✅ ATHLETE MANAGEMENT */}
+              <h4 style={{ marginTop: "20px" }}>🧘 Add Athletes</h4>
+              <input id="athleteName" placeholder="Enter Athlete Name"
+                style={{ width: "90%", padding: "10px", margin: "10px 0", borderRadius: "8px", border: "1px solid #ccc" }}
+              />
+              <button
+                onClick={addAthlete}
+                style={{
+                  width: "100%", padding: "10px",
+                  background: "#FF9800", color: "white",
+                  border: "none", borderRadius: "8px", cursor: "pointer"
+                }}
+              >
+                ➕ Add Athlete
+              </button>
+
+              <ul style={{ textAlign: "left", marginTop: "15px" }}>
+                {athletes.map((athlete, index) => (
+                  <li key={index}>🧍 {athlete}</li>
                 ))}
               </ul>
             </div>
@@ -243,3 +279,4 @@ export default function App() {
     </div>
   );
 }
+
