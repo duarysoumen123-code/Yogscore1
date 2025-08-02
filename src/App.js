@@ -25,8 +25,7 @@ export default function App() {
       alert("⚠️ Username already exists");
       return;
     }
-    const newUser = { username, password, role };
-    setUsers([...users, newUser]);
+    setUsers([...users, { username, password, role }]);
     alert(`✅ Account created for ${role}: ${username}`);
     setShowSignUp(false);
   };
@@ -34,22 +33,59 @@ export default function App() {
   const logout = () => setLoggedInUser(null);
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      <h1>🏆 Yogscore – Judging App</h1>
-
-      {/* 🔐 LOGIN FORM (if not logged in) */}
+    <div style={{
+      background: "linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%)",
+      minHeight: "100vh",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      fontFamily: "'Poppins', Arial, sans-serif"
+    }}>
       {!loggedInUser && !showSignUp && (
-        <div style={{ marginTop: "20px" }}>
-          <h2>Login</h2>
-          <input id="username" placeholder="Username" /> <br /><br />
-          <input id="password" type="password" placeholder="Password" /> <br /><br />
-          <select id="role">
+        <div style={{
+          background: "white",
+          padding: "40px",
+          borderRadius: "12px",
+          boxShadow: "0px 6px 20px rgba(0,0,0,0.15)",
+          width: "350px",
+          textAlign: "center"
+        }}>
+          <h1 style={{ marginBottom: "20px", color: "#1c1c1c" }}>🏆 Yogscore</h1>
+          <h3 style={{ marginBottom: "20px", color: "#555" }}>Login</h3>
+
+          <input id="username" placeholder="Username"
+            style={{
+              width: "90%", padding: "12px", margin: "8px 0",
+              borderRadius: "8px", border: "1px solid #ccc"
+            }}
+          /><br />
+
+          <input id="password" type="password" placeholder="Password"
+            style={{
+              width: "90%", padding: "12px", margin: "8px 0",
+              borderRadius: "8px", border: "1px solid #ccc"
+            }}
+          /><br />
+
+          <select id="role"
+            style={{
+              width: "95%", padding: "12px", margin: "8px 0",
+              borderRadius: "8px", border: "1px solid #ccc"
+            }}
+          >
             <option>Admin</option>
             <option>Judge</option>
             <option>Athlete</option>
-          </select>
-          <br /><br />
+          </select><br />
+
           <button
+            style={{
+              width: "100%", padding: "12px",
+              background: "#1877F2", color: "white",
+              fontWeight: "600", fontSize: "16px",
+              border: "none", borderRadius: "8px",
+              marginTop: "10px", cursor: "pointer"
+            }}
             onClick={() => {
               const username = document.getElementById("username").value;
               const password = document.getElementById("password").value;
@@ -60,25 +96,69 @@ export default function App() {
             Login
           </button>
 
-          <p style={{ marginTop: "10px" }}>
+          <p style={{ marginTop: "12px", color: "#333" }}>
             Don’t have an account?{" "}
-            <button onClick={() => setShowSignUp(true)}>Sign Up</button>
+            <button
+              style={{
+                background: "none",
+                border: "none",
+                color: "#1877F2",
+                fontWeight: "600",
+                cursor: "pointer"
+              }}
+              onClick={() => setShowSignUp(true)}
+            >
+              Sign Up
+            </button>
           </p>
         </div>
       )}
 
-      {/* 📝 SIGN‑UP FORM */}
+      {/* SIGN UP FORM */}
       {!loggedInUser && showSignUp && (
-        <div style={{ marginTop: "20px" }}>
-          <h2>Sign Up</h2>
-          <input id="newUsername" placeholder="Choose Username" /> <br /><br />
-          <input id="newPassword" type="password" placeholder="Choose Password" /> <br /><br />
-          <select id="newRole">
+        <div style={{
+          background: "white",
+          padding: "40px",
+          borderRadius: "12px",
+          boxShadow: "0px 6px 20px rgba(0,0,0,0.15)",
+          width: "350px",
+          textAlign: "center"
+        }}>
+          <h1 style={{ marginBottom: "20px", color: "#1c1c1c" }}>🏆 Yogscore</h1>
+          <h3 style={{ marginBottom: "20px", color: "#555" }}>Sign Up</h3>
+
+          <input id="newUsername" placeholder="Choose Username"
+            style={{
+              width: "90%", padding: "12px", margin: "8px 0",
+              borderRadius: "8px", border: "1px solid #ccc"
+            }}
+          /><br />
+
+          <input id="newPassword" type="password" placeholder="Choose Password"
+            style={{
+              width: "90%", padding: "12px", margin: "8px 0",
+              borderRadius: "8px", border: "1px solid #ccc"
+            }}
+          /><br />
+
+          <select id="newRole"
+            style={{
+              width: "95%", padding: "12px", margin: "8px 0",
+              borderRadius: "8px", border: "1px solid #ccc"
+            }}
+          >
             <option>Judge</option>
             <option>Athlete</option>
-          </select>
-          <br /><br />
+          </select><br />
+
           <button
+            style={{
+              width: "100%", padding: "12px",
+              background: "#42b72a", color: "white",
+              fontWeight: "600", fontSize: "16px",
+              border: "none", borderRadius: "8px",
+              marginTop: "10px", cursor: "pointer"
+            }}
             onClick={() => {
               const username = document.getElementById("newUsername").value;
               const password = document.getElementById("newPassword").value;
@@ -88,44 +168,45 @@ export default function App() {
           >
             Create Account
           </button>
-          <p style={{ marginTop: "10px" }}>
+
+          <p style={{ marginTop: "12px", color: "#333" }}>
             Already have an account?{" "}
-            <button onClick={() => setShowSignUp(false)}>Back to Login</button>
+            <button
+              style={{
+                background: "none",
+                border: "none",
+                color: "#1877F2",
+                fontWeight: "600",
+                cursor: "pointer"
+              }}
+              onClick={() => setShowSignUp(false)}
+            >
+              Back to Login
+            </button>
           </p>
         </div>
       )}
 
-      {/* ✅ DASHBOARD (if logged in) */}
+      {/* DASHBOARD */}
       {loggedInUser && (
-        <div style={{ marginTop: "20px" }}>
+        <div style={{
+          background: "white",
+          padding: "40px",
+          borderRadius: "12px",
+          boxShadow: "0px 6px 20px rgba(0,0,0,0.15)",
+          width: "400px",
+          textAlign: "center"
+        }}>
           <h2>✅ Welcome, {loggedInUser.role} {loggedInUser.username}!</h2>
-          <button onClick={logout} style={{ marginBottom: "20px" }}>Logout</button>
-
-          {loggedInUser.role === "Admin" && (
-            <div>
-              <h3>👑 Admin Dashboard</h3>
-              <ul>
-                <li>📋 Manage Events</li>
-                <li>🧘 Manage Athletes</li>
-                <li>⚖️ Manage Judges</li>
-                <li>📥 Export Scores</li>
-              </ul>
-            </div>
-          )}
-
-          {loggedInUser.role === "Judge" && (
-            <div>
-              <h3>⚖️ Judge Dashboard</h3>
-              <p>Here you will enter scores for athletes.</p>
-            </div>
-          )}
-
-          {loggedInUser.role === "Athlete" && (
-            <div>
-              <h3>🧘 Athlete Dashboard</h3>
-              <p>Here you will submit your Asana sequence.</p>
-            </div>
-          )}
+          <button onClick={logout} style={{
+            marginTop: "20px",
+            background: "#f44336",
+            color: "white",
+            padding: "10px 20px",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer"
+          }}>Logout</button>
         </div>
       )}
     </div>
