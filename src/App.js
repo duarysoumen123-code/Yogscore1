@@ -9,6 +9,9 @@ export default function App() {
   ]);
   const [showSignUp, setShowSignUp] = useState(false);
 
+  // ✅ New state for events (Admin feature)
+  const [events, setEvents] = useState([]);
+
   const login = (username, password, role) => {
     const user = users.find(
       (u) => u.username === username && u.password === password && u.role === role
@@ -32,6 +35,17 @@ export default function App() {
 
   const logout = () => setLoggedInUser(null);
 
+  // ✅ Add Event Function
+  const addEvent = () => {
+    const eventName = document.getElementById("eventName").value;
+    if (eventName.trim() === "") {
+      alert("⚠️ Please enter an event name");
+      return;
+    }
+    setEvents([...events, eventName]);
+    document.getElementById("eventName").value = "";
+  };
+
   return (
     <div style={{
       background: "url('https://images.unsplash.com/photo-1552196563-55cd4e45efb3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover",
@@ -45,7 +59,7 @@ export default function App() {
       {/* 🔐 LOGIN FORM */}
       {!loggedInUser && !showSignUp && (
         <div style={{
-          background: "rgba(255, 255, 255, 0.88)", // ✅ soft white overlay
+          background: "rgba(255, 255, 255, 0.88)",
           padding: "40px",
           borderRadius: "12px",
           boxShadow: "0px 6px 20px rgba(0,0,0,0.2)",
@@ -56,24 +70,15 @@ export default function App() {
           <h3 style={{ marginBottom: "20px", color: "#555" }}>Login</h3>
 
           <input id="username" placeholder="Username"
-            style={{
-              width: "90%", padding: "12px", margin: "8px 0",
-              borderRadius: "8px", border: "1px solid #ccc"
-            }}
+            style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
           /><br />
 
           <input id="password" type="password" placeholder="Password"
-            style={{
-              width: "90%", padding: "12px", margin: "8px 0",
-              borderRadius: "8px", border: "1px solid #ccc"
-            }}
+            style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
           /><br />
 
           <select id="role"
-            style={{
-              width: "95%", padding: "12px", margin: "8px 0",
-              borderRadius: "8px", border: "1px solid #ccc"
-            }}
+            style={{ width: "95%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
           >
             <option>Admin</option>
             <option>Judge</option>
@@ -101,13 +106,7 @@ export default function App() {
           <p style={{ marginTop: "12px", color: "#333" }}>
             Don’t have an account?{" "}
             <button
-              style={{
-                background: "none",
-                border: "none",
-                color: "#1877F2",
-                fontWeight: "600",
-                cursor: "pointer"
-              }}
+              style={{ background: "none", border: "none", color: "#1877F2", fontWeight: "600", cursor: "pointer" }}
               onClick={() => setShowSignUp(true)}
             >
               Sign Up
@@ -119,7 +118,7 @@ export default function App() {
       {/* 📝 SIGN-UP FORM */}
       {!loggedInUser && showSignUp && (
         <div style={{
-          background: "rgba(255, 255, 255, 0.88)", // ✅ soft white overlay
+          background: "rgba(255, 255, 255, 0.88)",
           padding: "40px",
           borderRadius: "12px",
           boxShadow: "0px 6px 20px rgba(0,0,0,0.2)",
@@ -130,24 +129,15 @@ export default function App() {
           <h3 style={{ marginBottom: "20px", color: "#555" }}>Sign Up</h3>
 
           <input id="newUsername" placeholder="Choose Username"
-            style={{
-              width: "90%", padding: "12px", margin: "8px 0",
-              borderRadius: "8px", border: "1px solid #ccc"
-            }}
+            style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
           /><br />
 
           <input id="newPassword" type="password" placeholder="Choose Password"
-            style={{
-              width: "90%", padding: "12px", margin: "8px 0",
-              borderRadius: "8px", border: "1px solid #ccc"
-            }}
+            style={{ width: "90%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
           /><br />
 
           <select id="newRole"
-            style={{
-              width: "95%", padding: "12px", margin: "8px 0",
-              borderRadius: "8px", border: "1px solid #ccc"
-            }}
+            style={{ width: "95%", padding: "12px", margin: "8px 0", borderRadius: "8px", border: "1px solid #ccc" }}
           >
             <option>Judge</option>
             <option>Athlete</option>
@@ -174,13 +164,7 @@ export default function App() {
           <p style={{ marginTop: "12px", color: "#333" }}>
             Already have an account?{" "}
             <button
-              style={{
-                background: "none",
-                border: "none",
-                color: "#1877F2",
-                fontWeight: "600",
-                cursor: "pointer"
-              }}
+              style={{ background: "none", border: "none", color: "#1877F2", fontWeight: "600", cursor: "pointer" }}
               onClick={() => setShowSignUp(false)}
             >
               Back to Login
@@ -192,7 +176,7 @@ export default function App() {
       {/* ✅ DASHBOARD */}
       {loggedInUser && (
         <div style={{
-          background: "rgba(255, 255, 255, 0.88)", // ✅ soft white overlay
+          background: "rgba(255, 255, 255, 0.88)",
           padding: "40px",
           borderRadius: "12px",
           boxShadow: "0px 6px 20px rgba(0,0,0,0.2)",
@@ -209,6 +193,51 @@ export default function App() {
             borderRadius: "8px",
             cursor: "pointer"
           }}>Logout</button>
+
+          {/* 👑 ADMIN DASHBOARD */}
+          {loggedInUser.role === "Admin" && (
+            <div>
+              <h3>👑 Admin Dashboard</h3>
+
+              {/* ✅ EVENT CREATION */}
+              <input id="eventName" placeholder="Enter Event Name"
+                style={{ width: "90%", padding: "10px", margin: "10px 0", borderRadius: "8px", border: "1px solid #ccc" }}
+              />
+              <button
+                onClick={addEvent}
+                style={{
+                  width: "100%", padding: "10px",
+                  background: "#4CAF50", color: "white",
+                  border: "none", borderRadius: "8px", cursor: "pointer"
+                }}
+              >
+                ➕ Add Event
+              </button>
+
+              {/* ✅ SHOW EVENTS LIST */}
+              <ul style={{ textAlign: "left", marginTop: "15px" }}>
+                {events.map((event, index) => (
+                  <li key={index}>📅 {event}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* ⚖️ JUDGE DASHBOARD */}
+          {loggedInUser.role === "Judge" && (
+            <div>
+              <h3>⚖️ Judge Dashboard</h3>
+              <p>Here you will enter scores for athletes.</p>
+            </div>
+          )}
+
+          {/* 🧘 ATHLETE DASHBOARD */}
+          {loggedInUser.role === "Athlete" && (
+            <div>
+              <h3>🧘 Athlete Dashboard</h3>
+              <p>Here you will submit your Asana sequence.</p>
+            </div>
+          )}
         </div>
       )}
     </div>
