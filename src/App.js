@@ -1,7 +1,8 @@
+
 import React, { useState } from "react";
 
 export default function App() {
-  // ✅ Store the logged in user
+  // ✅ Store who is logged in
   const [loggedInUser, setLoggedInUser] = useState(null);
 
   // ✅ Preloaded test users
@@ -24,15 +25,13 @@ export default function App() {
   };
 
   // ✅ Logout function
-  const logout = () => {
-    setLoggedInUser(null);
-  };
+  const logout = () => setLoggedInUser(null);
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
       <h1>🏆 Yogscore – Judging App</h1>
 
-      {/* 🔐 If NOT logged in → show login form */}
+      {/* 🔐 Login Form if NOT logged in */}
       {!loggedInUser && (
         <div style={{ marginTop: "20px" }}>
           <h2>Login</h2>
@@ -57,12 +56,40 @@ export default function App() {
         </div>
       )}
 
-      {/* ✅ If logged in → show welcome message */}
+      {/* ✅ If logged in → show dashboard based on role */}
       {loggedInUser && (
         <div style={{ marginTop: "20px" }}>
           <h2>✅ Welcome, {loggedInUser.role} {loggedInUser.username}!</h2>
-          <p>You are now logged in as: <strong>{loggedInUser.role}</strong></p>
-          <button onClick={logout}>Logout</button>
+          <button onClick={logout} style={{ marginBottom: "20px" }}>Logout</button>
+
+          {/* 👑 ADMIN DASHBOARD */}
+          {loggedInUser.role === "Admin" && (
+            <div>
+              <h3>👑 Admin Dashboard</h3>
+              <ul>
+                <li>📋 Manage Events</li>
+                <li>🧘 Manage Athletes</li>
+                <li>⚖️ Manage Judges</li>
+                <li>📥 Export Scores</li>
+              </ul>
+            </div>
+          )}
+
+          {/* ⚖️ JUDGE DASHBOARD */}
+          {loggedInUser.role === "Judge" && (
+            <div>
+              <h3>⚖️ Judge Dashboard</h3>
+              <p>Here you will enter scores for athletes.</p>
+            </div>
+          )}
+
+          {/* 🧘 ATHLETE DASHBOARD */}
+          {loggedInUser.role === "Athlete" && (
+            <div>
+              <h3>🧘 Athlete Dashboard</h3>
+              <p>Here you will submit your Asana sequence.</p>
+            </div>
+          )}
         </div>
       )}
     </div>
