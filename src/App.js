@@ -1,16 +1,18 @@
-
 import React, { useState } from "react";
 
 export default function App() {
-  // ✅ Store who is logged in
+  // ✅ Logged in user
   const [loggedInUser, setLoggedInUser] = useState(null);
 
-  // ✅ Preloaded test users
-  const users = [
+  // ✅ Users list (we can add new users here)
+  const [users, setUsers] = useState([
     { username: "admin", password: "admin", role: "Admin" },
     { username: "judge", password: "judge", role: "Judge" },
     { username: "athlete", password: "athlete", role: "Athlete" }
-  ];
+  ]);
+
+  // ✅ Show sign‑up form toggle
+  const [showSignUp, setShowSignUp] = useState(false);
 
   // ✅ Login function
   const login = (username, password, role) => {
@@ -24,6 +26,20 @@ export default function App() {
     }
   };
 
+  // ✅ Sign‑up function
+  const signUp = (username, password, role) => {
+    // prevent duplicate usernames
+    if (users.find((u) => u.username === username)) {
+      alert("⚠️ Username already exists");
+      return;
+    }
+    // add new user
+    const newUser = { username, password, role };
+    setUsers([...users, newUser]);
+    alert(✅ Account created for ${role}: ${username});
+    setShowSignUp(false); // close sign‑up form
+  };
+
   // ✅ Logout function
   const logout = () => setLoggedInUser(null);
 
@@ -31,8 +47,8 @@ export default function App() {
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
       <h1>🏆 Yogscore – Judging App</h1>
 
-      {/* 🔐 Login Form if NOT logged in */}
-      {!loggedInUser && (
+      {/* 🔐 LOGIN FORM (if not logged in) */}
+      {!loggedInUser && !showSignUp && (
         <div style={{ marginTop: "20px" }}>
           <h2>Login</h2>
           <input id="username" placeholder="Username" /> <br /><br />
@@ -53,10 +69,43 @@ export default function App() {
           >
             Login
           </button>
+
+          <p style={{ marginTop: "10px" }}>
+            Don’t have an account?{" "}
+            <button onClick={() => setShowSignUp(true)}>Sign Up</button>
+          </p>
         </div>
       )}
 
-      {/* ✅ If logged in → show dashboard based on role */}
+      {/* 📝 SIGN‑UP FORM */}
+      {!loggedInUser && showSignUp && (
+        <div style={{ marginTop: "20px" }}>
+          <h2>Sign Up</h2>
+          <input id="newUsername" placeholder="Choose Username" /> <br /><br />
+          <input id="newPassword" type="password" placeholder="Choose Password" /> <br /><br />
+          <select id="newRole">
+            <option>Judge</option>
+            <option>Athlete</option>
+          </select>
+          <br /><br />
+          <button
+            onClick={() => {
+              const username = document.getElementById("newUsername").value;
+              const password = document.getElementById("newPassword").value;
+              const role = document.getElementById("newRole").value;
+              signUp(username, password, role);
+            }}
+          >
+            Create Account
+          </button>
+          <p style={{ marginTop: "10px" }}>
+            Already have an account?{" "}
+            <button onClick={() => setShowSignUp(false)}>Back to Login</button>
+          </p>
+        </div>
+      )}
+
+      {/* ✅ DASHBOARD (if logged in) */}
       {loggedInUser && (
         <div style={{ marginTop: "20px" }}>
           <h2>✅ Welcome, {loggedInUser.role} {loggedInUser.username}!</h2>
