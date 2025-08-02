@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <div style={{
-      background: "linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #89f7fe 100%)",
+      background: "url('https://images.unsplash.com/photo-1599447421322-5e2b13cbb74a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover",
       minHeight: "100vh",
       display: "flex",
       justifyContent: "center",
@@ -117,7 +117,7 @@ export default function App() {
       {/* SIGN UP FORM */}
       {!loggedInUser && showSignUp && (
         <div style={{
-          background: "white",
+          background: "rgba(255, 255, 255, 0.9)",
           padding: "40px",
           borderRadius: "12px",
           boxShadow: "0px 0px 40px rgba(138, 180, 255, 0.4)"
