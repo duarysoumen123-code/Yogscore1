@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 // ✅ Firebase Setup
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAeWCO-gjVDKJ07fZbgeD_rs4oOl9s5wxY",
+  authDomain: "yogscore.firebaseapp.com",
+  databaseURL: "https://yogscore-default-rtdb.firebaseio.com",
+  projectId: "yogscore",
+  storageBucket: "yogscore.firebasestorage.app",
+  messagingSenderId: "965313907503",
+  appId: "1:965313907503:web:8ff189e8c0b93737c5efda",
 };
 
 // ✅ Initialize Firebase
