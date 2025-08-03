@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+
+import firebase from "firebase/compat/app";
+import "firebase/compat/database";
+
 // ✅ Firebase Setup
 const firebaseConfig = {
   apiKey: "AIzaSyAeWCO-gjVDKJ07fZbgeD_rs4oOl9s5wxY",
