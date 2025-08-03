@@ -1,5 +1,19 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+// ✅ Firebase Setup
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+// ✅ Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 // 🔥 Firebase imports (optional for real-time later)
 // import { initializeApp } from "firebase/app";
 // import { getDatabase, ref, set, onValue } from "firebase/database";
