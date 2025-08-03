@@ -112,36 +112,63 @@ useEffect(() => {
 
   // ✅ Admin Management
   const addEvent = () => {
-    const name = document.getElementById("eventName").value;
-    if (!name) return alert("⚠️ Enter event name");
-    setEvents([...events, name]);
-    document.getElementById("eventName").value = "";
-  };
-  const removeEvent = (i) => setEvents(events.filter((_, idx) => idx !== i));
+  const name = document.getElementById("eventName").value;
+  if (!name) return alert("⚠️ Enter event name");
+  const updated = [...(events || []), name];
+  firebase.database().ref("events").set(updated);  // ✅ save to Firebase
+  setEvents(updated);
+  document.getElementById("eventName").value = "";
+};
+
+  const removeEvent = (i) => {
+  const updated = events.filter((_, idx) => idx !== i);
+  firebase.database().ref("events").set(updated);  // ✅ update Firebase
+  setEvents(updated);
+};
+
 
   const addAthlete = () => {
     const name = document.getElementById("athleteName").value;
     if (!name) return alert("⚠️ Enter athlete name");
-    setAthletes([...athletes, name]);
+    const updated = [...(athletes || []), name];
+ firebase.database().ref("athletes").set(updated);
+ setAthletes(updated);
+ 
     document.getElementById("athleteName").value = "";
   };
-  const removeAthlete = (i) => setAthletes(athletes.filter((_, idx) => idx !== i));
+  const removeAthlete = (i) => {
+  const updated = athletes.filter((_, idx) => idx !== i);
+  firebase.database().ref("athletes").set(updated);
+  setAthletes(updated);
+}; 
+
 
   const addJudge = () => {
     const name = document.getElementById("judgeName").value;
     const role = document.getElementById("judgeRole").value;
     if (!name) return alert("⚠️ Enter judge name");
-    setJudges([...judges, { name, role }]);
+    const updated = [...(judges || []), { name, role }];
+ firebase.database().ref("judges").set(updated);
+ setJudges(updated);
+
     document.getElementById("judgeName").value = "";
   };
-  const removeJudge = (i) => setJudges(judges.filter((_, idx) => idx !== i));
+  const removeJudge = (i) => {
+  const updated = judges.filter((_, idx) => idx !== i);
+  firebase.database().ref("judges").set(updated);
+  setJudges(updated);
+};
+
 
   // ✅ Judge: Save Scores
   const saveScore = (athlete, D, A, T, Penalty) => {
     if (D === "" || A === "" || T === "" || Penalty === "") {
       return alert("⚠️ Enter all scores");
     }
-    setScores({ ...scores, [athlete]: { D, A, T, Penalty } });
+    const updated = { ...scores, [athlete]: { D, A, T, Penalty } };
+firebase.database().ref("scores").set(updated);
+setScores(updated);
+
     alert(`✅ Scores saved for ${athlete}`);
   };
 
