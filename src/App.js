@@ -35,6 +35,37 @@ export default function App() {
   const [judges, setJudges] = useState(() => JSON.parse(localStorage.getItem("judges")) || []);
   const [scores, setScores] = useState(() => JSON.parse(localStorage.getItem("scores")) || {});
 
+  // ✅ Load data from Firebase when app opens
+useEffect(() => {
+  // 👀 Listen for athletes list
+  firebase.database().ref("athletes").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      setAthletes(snapshot.val());
+    }
+  });
+
+  // 👀 Listen for judges list
+  firebase.database().ref("judges").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      setJudges(snapshot.val());
+    }
+  });
+
+  // 👀 Listen for events list
+  firebase.database().ref("events").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      setEvents(snapshot.val());
+    }
+  });
+
+  // 👀 Listen for scores
+  firebase.database().ref("scores").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      setScores(snapshot.val());
+    }
+  });
+}, []);
+
   // ✅ Save to LocalStorage on change
   useEffect(() => {
     localStorage.setItem("users", JSON.stringify(users));
