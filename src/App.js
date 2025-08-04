@@ -3,6 +3,33 @@ import * as XLSX from "xlsx";
 
 // 🔥 Firebase imports (optional for real-time later)
 // import { initializeApp } from "firebase/app";
+function ChiefJudgeDashboard({ scores }) {
+  return (
+    <div>
+      <h3>🧠 Chief Judge Panel</h3>
+      {Object.keys(scores).length === 0 ? (
+        <p>❌ No scores yet.</p>
+      ) : (
+        <table border="1" style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead>
+            <tr><th>Athlete</th><th>D</th><th>A</th><th>T</th><th>Penalty</th></tr>
+          </thead>
+          <tbody>
+            {Object.entries(scores).map(([athlete, score], i) => (
+              <tr key={i}>
+                <td>{athlete}</td>
+                <td>{score.D}</td>
+                <td>{score.A}</td>
+                <td>{score.T}</td>
+                <td>{score.Penalty}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
 // import { getDatabase, ref, set, onValue } from "firebase/database";
 
 export default function App() {
