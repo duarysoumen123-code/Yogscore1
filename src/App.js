@@ -132,8 +132,12 @@ export default function App() {
           <input id="username" placeholder="Username" style={{ width: "90%", padding: 10, margin: 5 }} /><br />
           <input id="password" type="password" placeholder="Password" style={{ width: "90%", padding: 10, margin: 5 }} /><br />
           <select id="role" style={{ width: "95%", padding: 10, margin: 5 }}>
-            <option>Admin</option><option>Judge</option><option>Athlete</option>
-          </select><br />
+            <option>Admin</option>
+            <option>Chief Judge</option>
+            <option>Judge</option>
+            <option>Athlete</option>
+          </select>
+            
           <button style={{ width: "100%", padding: 10, background: "#1877F2", color: "white" }}
             onClick={() => {
               const u = document.getElementById("username").value;
@@ -159,8 +163,10 @@ export default function App() {
           <input id="newPassword" type="password" placeholder="Choose Password" style={{ width: "90%", padding: 10, margin: 5 }} /><br />
           <select id="newRole" style={{ width: "95%", padding: 10, margin: 5 }}>
             <option>Judge</option>
+            <option>Chief Judge</option>
             <option>Athlete</option>
-          </select><br />
+          </select>
+
           <button style={{ width: "100%", padding: 10, background: "#4CAF50", color: "white" }}
             onClick={() => {
               const u = document.getElementById("newUsername").value;
