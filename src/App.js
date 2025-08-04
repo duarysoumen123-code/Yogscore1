@@ -294,7 +294,10 @@ export default function App() {
                 </div>
               ))}
             </div>
-          )}
+          )}{loggedInUser.role === "Chief Judge" && (
+  <ChiefJudgeDashboard scores={scores} />
+)}
+
         </div>
       )}
     </div>
