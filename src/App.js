@@ -191,54 +191,28 @@ export default function App() {
         </div>
       )}
 
-      {/* ✅ DASHBOARD */}
-      {loggedInUser && (
-        <div style={{ background: "rgba(255,255,255,0.95)", padding: 30, borderRadius: 12, width: 520 }}>
-          <h2>✅ Welcome, {loggedInUser.role} {loggedInUser.username}</h2>
-          <button onClick={logout} style={{ float: "right", marginBottom: 20, background: "#f44336", color: "white", padding: "5px 10px", borderRadius: 6 }}>Logout</button>
+{/* ✅ DASHBOARD */}
+{loggedInUser && (
+  <div>
+    {/* Shared dashboard content */}
+    
+    {/* 👑 ADMIN DASHBOARD */}
+    {loggedInUser.role === "Admin" && (
+      <AdminDashboard />
+    )}
 
-          {/* 👑 ADMIN DASHBOARD */}
-          {loggedInUser.role === "Admin" && (
-            <div>
-              <h3>👑 Admin Dashboard</h3>
-              <h4>📋 Events</h4>
-              <input id="eventName" placeholder="Event Name" />
-              <button onClick={addEvent}>➕ Add Event</button>
-              <ul>{events.map((e, i) => (<li key={i}>{e} <button onClick={() => removeEvent(i)}>❌</button></li>))}</ul>
+    {/* 🧠 CHIEF JUDGE VIEW */}
+    {loggedInUser.role === "Chief Judge" && (
+      <ChiefJudgeDashboard scores={scores} />
+    )}
 
-              <h4>🧘 Athletes</h4>
-              <input id="athleteName" placeholder="Athlete Name" />
-              <button onClick={addAthlete}>➕ Add Athlete</button>
-              <ul>{athletes.map((a, i) => (<li key={i}>{a} <button onClick={() => removeAthlete(i)}>❌</button></li>))}</ul>
+    {/* ⚖️ JUDGE DASHBOARD */}
+    {loggedInUser.role === "Judge" && (
+      <JudgeDashboard athletes={athletes} saveScore={saveScore} />
+    )}
+  </div>
+)}
 
-              <h4>⚖️ Judges</h4>
-              <input id="judgeName" placeholder="Judge Name" />
-              <select id="judgeRole">
-                <option>D Judge</option><option>A Judge</option><option>T Judge</option><option>Evaluator</option>
-              </select>
-              <button onClick={addJudge}>➕ Add Judge</button>
-              <ul>{judges.map((j, i) => (<li key={i}>{j.name} — {j.role} <button onClick={() => removeJudge(i)}>❌</button></li>))}</ul>
-
-              <h3>📊 Scoreboard</h3>
-              {Object.keys(scores).length === 0 ? <p>❌ No scores yet.</p> : (
-                <table border="1" style={{ width: "100%", borderCollapse: "collapse" }}>
-                  <thead><tr><th>Athlete</th><th>D</th><th>A</th><th>T</th><th>Penalty</th></tr></thead>
-                  <tbody>
-                    {Object.keys(scores).map((athlete, i) => (
-                      <tr key={i}>
-                        <td>{athlete}</td>
-                        <td>{scores[athlete].D}</td>
-                        <td>{scores[athlete].A}</td>
-                        <td>{scores[athlete].T}</td>
-                        <td>{scores[athlete].Penalty}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-              <button onClick={exportToExcel} style={{ marginTop: 10 }}>📥 Export to Excel</button>
-            </div>
-          )}
 
           {/* ⚖️ JUDGE DASHBOARD */}
           {loggedInUser.role === "Judge" && (
