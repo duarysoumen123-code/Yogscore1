@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+import './index.css'; // or App.css, depending on your setup
+
 // 🔥 Firebase imports (optional for real-time later)
 // import { initializeApp } from "firebase/app";
 // import { getDatabase, ref, set, onValue } from "firebase/database";
