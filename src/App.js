@@ -253,9 +253,23 @@ export default function App() {
               <button onClick={addEvent}>➕ Add Event</button>
               <ul>{events.map((e, i) => (<li key={i}>{e} <button onClick={() => removeEvent(i)}>❌</button></li>))}</ul>
 
-              <h4>🧘 Athletes</h4>
-              <input id="athleteName" placeholder="Athlete Name" />
-              <button onClick={addAthlete}>➕ Add Athlete</button>
+              <h4>📋 Events</h4>
+<input id="eventName" placeholder="Event Name" />
+<input id="eventAgeGroup" placeholder="Age Group (e.g., Under 17)" />
+<select id="eventGender">
+  <option value="">Select Gender</option>
+  <option>Male</option>
+  <option>Female</option>
+</select>
+<select id="eventScoringType">
+  <option value="">Select Scoring Type</option>
+  <option value="standard">Standard</option>
+  <option value="pair">Pair</option>
+  <option value="rhythmic">Rhythmic</option>
+  <option value="artistic">Artistic</option>
+</select>
+<button onClick={addEvent}>➕ Add Event</button>
+
               <ul>{athletes.map((a, i) => (<li key={i}>{a} <button onClick={() => removeAthlete(i)}>❌</button></li>))}</ul>
 
               <h4>⚖️ Judges</h4>
