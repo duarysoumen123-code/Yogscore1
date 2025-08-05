@@ -134,13 +134,51 @@ export default function App() {
   const removeJudge = (i) => setJudges(judges.filter((_, idx) => idx !== i));
 
   // ✅ Judge: Save Scores
+ function calculateFinalScore(type, D, A, T, Penalty) {
+  let final = 0;
+
+  switch (type) {
+    case "standard":
+      final = D + A + T - Penalty;
+      break;
+    case "pair":
+      final = (D + A) * 0.9 + T - Penalty;
+      break;
+    case "group":
+      final = D + (A * 2) + (T * 0.5) - Penalty;
+      break;
+    case "artistic":
+      final = (D * 0.8) + (A * 1.2) + T - Penalty;
+      break;
+    default:
+      final = D + A + T - Penalty;
+  }
+
+  return final.toFixed(2); // Round to 2 decimal
+}
+ 
+  
   const saveScore = (athlete, D, A, T, Penalty) => {
-    if (D === "" || A === "" || T === "" || Penalty === "") {
-      return alert("⚠️ Enter all scores");
-    }
-    setScores({ ...scores, [athlete]: { D, A, T, Penalty } });
-    alert(`✅ Scores saved for ${athlete}`);
-  };
+  if (D === "" || A === "" || T === "" || Penalty === "") {
+    return alert("⚠️ Enter all scores");
+  }
+
+  const selectedEventIndex = document.getElementById("selectedEvent")?.value;
+  if (selectedEventIndex === "" || selectedEventIndex === undefined) {
+    return alert("⚠️ Select an event");
+  }
+
+  const event = events[selectedEventIndex];
+  const finalScore = calculateFinalScore(event.scoringType, parseFloat(D), parseFloat(A), parseFloat(T), parseFloat(Penalty));
+
+  setScores({
+    ...scores,
+    [athlete]: { D, A, T, Penalty, finalScore }
+  });
+
+  alert(`✅ Scores saved for ${athlete} | Final Score: ${finalScore}`);
+};
+
 
   // ✅ Excel Export
   const exportToExcel = () => {
