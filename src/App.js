@@ -347,7 +347,7 @@ export default function App() {
               <h3>📊 Scoreboard</h3>
               {Object.keys(scores).length === 0 ? <p>❌ No scores yet.</p> : (
                 <table border="1" style={{ width: "100%", borderCollapse: "collapse" }}>
-                  <thead><tr><th>Athlete</th><th>D</th><th>A</th><th>T</th><th>Penalty</th></tr></thead>
+                  <thead><tr><th>Athlete</th><th>D</th><th>A</th><th>T</th><th>Penalty</th><th>Final</th></tr>
                   <tbody>
                     {Object.keys(scores).map((athlete, i) => (
                       <tr key={i}>
@@ -356,6 +356,8 @@ export default function App() {
                         <td>{scores[athlete].A}</td>
                         <td>{scores[athlete].T}</td>
                         <td>{scores[athlete].Penalty}</td>
+<td><strong>{scores[athlete].finalScore}</strong></td>
+
                       </tr>
                     ))}
                   </tbody>
