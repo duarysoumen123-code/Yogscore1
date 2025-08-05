@@ -95,11 +95,25 @@ export default function App() {
 
   // ✅ Admin Management
   const addEvent = () => {
-    const name = document.getElementById("eventName").value;
-    if (!name) return alert("⚠️ Enter event name");
-    setEvents([...events, name]);
-    document.getElementById("eventName").value = "";
-  };
+  const name = document.getElementById("eventName").value;
+  const ageGroup = document.getElementById("eventAgeGroup").value;
+  const gender = document.getElementById("eventGender").value;
+  const scoringType = document.getElementById("eventScoringType").value;
+
+  if (!name || !ageGroup || !gender || !scoringType) {
+    return alert("⚠️ Fill all event fields");
+  }
+
+  const newEvent = { name, ageGroup, gender, scoringType };
+  setEvents([...events, newEvent]);
+
+  // Clear input fields
+  document.getElementById("eventName").value = "";
+  document.getElementById("eventAgeGroup").value = "";
+  document.getElementById("eventGender").value = "";
+  document.getElementById("eventScoringType").value = "";
+};
+
   const removeEvent = (i) => setEvents(events.filter((_, idx) => idx !== i));
 
   const addAthlete = () => {
