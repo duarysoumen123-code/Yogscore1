@@ -330,6 +330,15 @@ export default function App() {
           {/* ⚖️ JUDGE DASHBOARD */}
           {loggedInUser.role === "Judge" && (
             <div>
+            <select id="selectedEvent" style={{ marginBottom: "1rem", padding: 10 }}>
+  <option value="">Select Event</option>
+  {events.map((event, i) => (
+    <option key={i} value={i}>
+      {event.name} ({event.ageGroup} / {event.gender} / {event.scoringType})
+    </option>
+  ))}
+</select>
+
               <h3>⚖️ Judge Dashboard</h3>
               {athletes.length === 0 ? <p>❌ No athletes yet.</p> : athletes.map((athlete, idx) => (
                 <div key={idx} style={{ margin: 10, padding: 10, background: "#fff", borderRadius: 8 }}>
