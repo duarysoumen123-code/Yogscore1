@@ -251,7 +251,15 @@ export default function App() {
               <h4>📋 Events</h4>
               <input id="eventName" placeholder="Event Name" />
               <button onClick={addEvent}>➕ Add Event</button>
-              <ul>{events.map((e, i) => (<li key={i}>{e} <button onClick={() => removeEvent(i)}>❌</button></li>))}</ul>
+              <ul>
+  {events.map((e, i) => (
+    <li key={i}>
+      <strong>{e.name}</strong> — {e.ageGroup} — {e.gender} — {e.scoringType}
+      <button onClick={() => removeEvent(i)}>❌</button>
+    </li>
+  ))}
+</ul>
+
 
               <h4>📋 Events</h4>
 <input id="eventName" placeholder="Event Name" />
