@@ -250,7 +250,25 @@ export default function App() {
               <h3>👑 Admin Dashboard</h3>
               <h4>📋 Events</h4>
               <input id="eventName" placeholder="Event Name" />
-              <button onClick={addEvent}>➕ Add Event</button>
+<select id="eventAgeGroup">
+  <option>Under 11</option>
+  <option>Under 14</option>
+  <option>Under 17</option>
+  <option>Under 21</option>
+  <option>21 & Above</option>
+</select>
+<select id="eventGender">
+  <option>Male</option>
+  <option>Female</option>
+</select>
+<select id="eventScoringType">
+  <option value="standard">Standard</option>
+  <option value="pair">Pair</option>
+  <option value="group">Group</option>
+  <option value="artistic">Artistic</option>
+</select>
+<button onClick={addEvent}>➕ Add Event</button>
+
               <ul>
   {events.map((e, i) => (
     <li key={i}>
